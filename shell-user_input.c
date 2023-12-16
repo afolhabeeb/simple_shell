@@ -4,25 +4,43 @@
  * read_command - read command input from the user
  *
  * @command: takes the command argument
- * @size: the size of the standard input
  *
- * Return: no return
+ * Return: string representing the folder
+ * for command to be executed
  */
 
-void read_command(char *command, size_t size)
+char *read_command(char *command)
 {
-	if (fgets(command, size, stdin) == NULL)
+	DIR *folder;
+	struct dirent *entry;
+	char *cmd, comp, **str = malloc(sizeof(char) * 1024);
+	char **split = malloc(sizeof(char) * 1024);
+	int i;
+
+	while (*environ != NULL)
 	{
-		if (feof(stdin))
+		if (!(_strcmpdir(*environ, "PATH")))
 		{
-			shell_print("\n");
-			exit(EXIT_SUCCESS);
+			*str = *environ;
+			for (i = 0; i < 9; i++, split++, str++)
+			{
+				*split = strtok(*str, ":='PATH'");
+				folder = opendir(*split);
+				if (folder == NULL)
+					perror("Unable to read directory");
+
+				while ((entry = readdir(folder)))
+				{
+					cmd = entry->d_name;
+					comp = _strcmpdir(cmd, command);
+					if (comp == 0)
+						return (*split);
+					if (cmd == NULL)
+						perror("Error");
+				}
+			}
 		}
-		else
-		{
-			shell_print("Error while reading input");
-			exit(EXIT_FAILURE);
-		}
+		environ++;
 	}
-	command[strcspn(command, "\n")] = '\0';
+	return ("Error: Not Found");
 }

@@ -3,38 +3,41 @@
 /**
  * execute_command - executes the command prompt received by the shell
  *
- * @command: the command to be executed
+ * @cmd: the command to be executed
  *
  * Return: no return
  */
 
-void execute_command(const char *command)
+void execute_command(char **cmd)
 {
-	pid_t child_pid = fork();
+	char *param = (*(cmd + 1));
+	char *s, *slash = "/";
+	char *o;
+	char *var_print = *cmd;
+	char *argv[4];
 
-	if (child_pid == -1)
+	if ((access(cmd[0], F_OK) == 0))
 	{
-		shell_print("Error forking process.\n");
-		exit(EXIT_FAILURE);
-	}
-	else if (child_pid == 0)
-	{
-		char *args[128];
-		int arg_cnt = 0;
-		char *token = strtok((char *)command, " ");
+		argv[0] = cmd[0];
+		argv[1] = param;
+		argv[2] = ".";
+		argv[3] = NULL;
 
-		while (token != NULL)
-		{
-			args[arg_cnt++] = token;
-			token = strtok(NULL, " ");
-		}
-		args[arg_cnt] = NULL;
-
-		execvp(args[0], args);
-
-		shell_print("Error executing command.\n");
-		exit(EXIT_FAILURE);
+		if (execve(argv[0], argv, NULL) == -1)
+			perror("Error");
 	}
 	else
-		wait(NULL);
+	{
+		o = read_command(var_print);
+		slash = str_concat(o, slash);
+		s = str_concat(slash, *cmd);
+
+		argv[0] = s;
+		argv[1] = param;
+		argv[2] = ".";
+		argv[3] = NULL;
+
+		if (execve(argv[0], argv, NULL) == -1)
+			perror("Error");
+	}
 }

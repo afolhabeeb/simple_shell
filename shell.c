@@ -3,21 +3,20 @@
 /**
  * main - output the shell itself
  *
- * @void: the void print
+ * @ac: first argument
+ * @av: second variable
  *
  * Return: return the shell prompt with message.
  */
 
-int main(void)
+int main(int ac, char **av)
 {
-	char command[120];
+	(void)av;
+	(void)ac;
 
-	while (true)
-	{
-		display_prompt();
-		read_command(command, sizeof(command));
-		execute_command(command);
-	}
+	signal(SIGINT, controlC);
+	display_prompt();
 
 	return (0);
+
 }

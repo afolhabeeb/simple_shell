@@ -14,10 +14,27 @@
 #include <limits.h>
 #include <string.h>
 
+extern char **environ;
 
+
+char *show_input(void);
+
+
+int lookforslash(char *cmd);
+int compareExit(char *s1, char *s2);
+char **id_str(char *param);
+void controlC(int sig);
+int compareEnv(char *s1, char *s2);
+int charput(char c);
+void shell_place(char *str);
+int _strcmpdir(char *s1, char *s2);
+int _strlen(char *str);
+char *str_concat(char *s1, char *s2);
 void display_prompt(void);
-void shell_print(const char *message);
-void read_command(char *command, size_t size);
-void execute_command(const char *command);
+void execute_command(char **cmd);
+int main(int ac, char **av);
+char *read_command(char *command);
+
+
 
 #endif
