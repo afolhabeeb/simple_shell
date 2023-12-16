@@ -4,8 +4,6 @@
  * lookforslash - identifies the first characer as slash
  *
  * @cmd: first element
- *
- * Return: 1 for true value and 0 for false
  */
 
 int lookforslash(char *cmd)

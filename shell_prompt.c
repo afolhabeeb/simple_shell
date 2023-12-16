@@ -1,5 +1,9 @@
 #include "shell.h"
 
+
+#define MAX_CMD_LEN 256
+
+
 /**
  * display_prompt - displays the shell address
  *
@@ -11,10 +15,11 @@ void display_prompt(void)
 	pid_t child_pid;
 	int status, buflen;
 	size_t bufsize = 0;
+	child_pid = fork();
 
 	for (;;)
 	{
-		shell_place("$ ");
+		shell_place("odun-hab$ ");
 		buflen = getline(&text, &bufsize, stdin);
 		if (buflen == -1)
 			exit(98);
