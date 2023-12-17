@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * swap_char - swaps | and & for non-printed chars
@@ -84,10 +84,10 @@ void add_nodes(sep_list **head_s, line_list **head_l, char *input)
  *
  * @list_s: separator list
  * @list_l: command line list
- * @shell_data: data structure
+ * @datash: data structure
  * Return: no return
  */
-void go_next(sep_list **list_s, line_list **list_l, data_shell *shell_data)
+void go_next(sep_list **list_s, line_list **list_l, data_shell *datash)
 {
 	int loop_sep;
 	sep_list *ls_s;
@@ -99,7 +99,7 @@ void go_next(sep_list **list_s, line_list **list_l, data_shell *shell_data)
 
 	while (ls_s != NULL && loop_sep)
 	{
-		if (shell_data->status == 0)
+		if (datash->status == 0)
 		{
 			if (ls_s->separator == '&' || ls_s->separator == ';')
 				loop_sep = 0;
@@ -125,11 +125,11 @@ void go_next(sep_list **list_s, line_list **list_l, data_shell *shell_data)
  * split_commands - splits command lines according to
  * the separators ;, | and &, and executes them
  *
- * @shell_data: data structure
+ * @datash: data structure
  * @input: input string
  * Return: 0 to exit, 1 to continue
  */
-int split_commands(data_shell *shell_data, char *input)
+int split_commands(data_shell *datash, char *input)
 {
 
 	sep_list *head_s, *list_s;
@@ -146,15 +146,15 @@ int split_commands(data_shell *shell_data, char *input)
 
 	while (list_l != NULL)
 	{
-		shell_data->input = list_l->line;
-		shell_data->args = split_line(shell_data->input);
-		loop = exec_line(shell_data);
-		free(shell_data->args);
+		datash->input = list_l->line;
+		datash->args = split_line(datash->input);
+		loop = exec_line(datash);
+		free(datash->args);
 
 		if (loop == 0)
 			break;
 
-		go_next(&list_s, &list_l, shell_data);
+		go_next(&list_s, &list_l, datash);
 
 		if (list_l != NULL)
 			list_l = list_l->next;
@@ -185,7 +185,7 @@ char **split_line(char *input)
 	tokens = malloc(sizeof(char *) * (bsize));
 	if (tokens == NULL)
 	{
-		write(STDERR_FILENO, ": allocation errors\n", 18);
+		write(STDERR_FILENO, ": allocation error\n", 18);
 		exit(EXIT_FAILURE);
 	}
 
@@ -200,7 +200,7 @@ char **split_line(char *input)
 			tokens = _reallocdp(tokens, i, sizeof(char *) * bsize);
 			if (tokens == NULL)
 			{
-				write(STDERR_FILENO, ": allocation errors\n", 18);
+				write(STDERR_FILENO, ": allocation error\n", 18);
 				exit(EXIT_FAILURE);
 			}
 		}

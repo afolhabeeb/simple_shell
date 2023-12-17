@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * check_env - checks if the typed variable is an env variable
@@ -89,7 +89,7 @@ int check_vars(r_var **h, char *in, char *st, data_shell *data)
  * @head: head of the linked list
  * @input: input string
  * @new_input: new input string (replaced)
- * @nlen: new len
+ * @nlen: new length
  * Return: replaced string
  */
 char *replaced_input(r_var **head, char *input, char *new_input, int nlen)
@@ -139,19 +139,19 @@ char *replaced_input(r_var **head, char *input, char *new_input, int nlen)
  * rep_var - calls functions to replace string into vars
  *
  * @input: input string
- * @shell_data: data structure
+ * @datash: data structure
  * Return: replaced string
  */
-char *rep_var(char *input, data_shell *shell_data)
+char *rep_var(char *input, data_shell *datash)
 {
 	r_var *head, *indx;
 	char *status, *new_input;
 	int olen, nlen;
 
-	status = shell_itoa(shell_data->status);
+	status = aux_itoa(datash->status);
 	head = NULL;
 
-	olen = check_vars(&head, input, status, shell_data);
+	olen = check_vars(&head, input, status, datash);
 
 	if (head == NULL)
 	{

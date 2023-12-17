@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * _strcat - concatenate two strings
@@ -79,7 +79,7 @@ char *_strchr(char *s, char c)
 	return ('\0');
 }
 /**
- * _strspn - gets the len of a prefix substring.
+ * _strspn - gets the length of a prefix substring.
  * @s: initial segment.
  * @accept: accepted bytes.
  * Return: the number of accepted bytes.

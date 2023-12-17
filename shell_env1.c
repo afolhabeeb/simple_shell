@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * cmp_env_name - compares env variables names
@@ -40,7 +40,7 @@ char *_getenv(const char *name, char **_environ)
 	ptr_env = NULL;
 	mov = 0;
 	/* Compare all environment variables */
-	/* environ is declared in the headd_listr file */
+	/* environ is declared in the header file */
 	for (i = 0; _environ[i]; i++)
 	{
 		/* If name and env are equal */
@@ -58,23 +58,23 @@ char *_getenv(const char *name, char **_environ)
 /**
  * _env - prints the evironment variables
  *
- * @shell_data: data relevant.
+ * @datash: data relevant.
  * Return: 1 on success.
  */
-int _env(data_shell *shell_data)
+int _env(data_shell *datash)
 {
 	int i, j;
 
-	for (i = 0; shell_data->_environ[i]; i++)
+	for (i = 0; datash->_environ[i]; i++)
 	{
 
-		for (j = 0; shell_data->_environ[i][j]; j++)
+		for (j = 0; datash->_environ[i][j]; j++)
 			;
 
-		write(STDOUT_FILENO, shell_data->_environ[i], j);
+		write(STDOUT_FILENO, datash->_environ[i], j);
 		write(STDOUT_FILENO, "\n", 1);
 	}
-	shell_data->status = 0;
+	datash->status = 0;
 
 	return (1);
 }
